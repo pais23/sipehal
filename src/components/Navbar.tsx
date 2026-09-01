@@ -51,7 +51,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   SIPEHAL
                 </h1>
                 <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full bg-[#5B6D5F] text-[#F1F3F0] border border-[#7B8C7C]/40 text-[10px] font-mono font-bold">
-                  TJQ • SISI UDARA
+                  TJQ • WIKT
                 </span>
               </div>
               <p className="text-[11px] text-[#E2DDD5] hidden xs:block">

@@ -416,7 +416,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
               className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#D97706] hover:bg-[#B45309] text-white rounded-xl text-xs font-bold shadow-sm transition-all active:scale-95 self-stretch sm:self-auto justify-center"
             >
               <Plus className="w-4 h-4" />
-              + Tambah Baris Temuan
+               Tambah Baris Temuan
             </button>
           </div>
 
