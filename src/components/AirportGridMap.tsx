@@ -187,14 +187,14 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
 
       {/* Map Canvas / Stage (8 Columns x 4 Rows Aspect Ratio) */}
       <div 
-        className={`relative w-full overflow-hidden bg-[#2A342C] flex items-center justify-center ${compact ? 'p-0.5' : 'p-1 sm:p-2'}`}
+        className={`relative w-full overflow-hidden bg-white flex items-center justify-center ${compact ? 'p-0.5' : 'p-1 sm:p-2'}`}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >
         <div 
-          className={`relative transition-transform duration-75 origin-center w-full ${compact ? 'aspect-[2.35/1]' : 'aspect-[2.1/1]'} bg-[#1a2818] border ${compact ? 'border-black/60' : 'border-2 border-black'} shadow-sm`}
+          className={`relative transition-transform duration-75 origin-center w-full ${compact ? 'aspect-[2.35/1]' : 'aspect-[2.1/1]'} bg-white border border-black shadow-sm`}
           style={{
             transform: interactive ? `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)` : undefined
           }}
@@ -208,100 +208,100 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
               viewBox="0 0 1600 800" 
               preserveAspectRatio="none"
             >
-              {/* Satellite Background Simulation (Belitung Airfield Terrain) */}
+              {/* Map Background (always white vector style) */}
               <defs>
-                {/* Grass & Forest Texture Gradient */}
                 <linearGradient id="terrainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#2e4228" />
-                  <stop offset="35%" stopColor="#3d5234" />
-                  <stop offset="70%" stopColor="#2f452a" />
-                  <stop offset="100%" stopColor="#253820" />
+                  <stop offset="0%" stopColor="#ffffff" />
+                  <stop offset="35%" stopColor="#f5f5f5" />
+                  <stop offset="70%" stopColor="#f0f0f0" />
+                  <stop offset="100%" stopColor="#ffffff" />
                 </linearGradient>
 
-                {/* Cleared Airfield Ground Gradient */}
                 <linearGradient id="clearedGround" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#4a5f42" />
-                  <stop offset="50%" stopColor="#546b4c" />
-                  <stop offset="100%" stopColor="#415539" />
+                  <stop offset="0%" stopColor="#e8e8e8" />
+                  <stop offset="50%" stopColor="#e0e0e0" />
+                  <stop offset="100%" stopColor="#e8e8e8" />
                 </linearGradient>
 
-                {/* Asphalt Runway Gradient */}
                 <linearGradient id="asphaltGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#374151" />
-                  <stop offset="50%" stopColor="#1F2937" />
-                  <stop offset="100%" stopColor="#374151" />
+                  <stop offset="0%" stopColor="#999999" />
+                  <stop offset="50%" stopColor="#808080" />
+                  <stop offset="100%" stopColor="#999999" />
                 </linearGradient>
 
-                {/* Sand / Soil Clearing */}
                 <radialGradient id="soilPond" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#3b82f6" />
-                  <stop offset="85%" stopColor="#1d4ed8" />
-                  <stop offset="100%" stopColor="#854d0e" />
+                  <stop offset="0%" stopColor="#90cdf4" />
+                  <stop offset="85%" stopColor="#63b3ed" />
+                  <stop offset="100%" stopColor="#4299e1" />
                 </radialGradient>
               </defs>
 
               {/* Base terrain */}
               <rect width="1600" height="800" fill="url(#terrainGrad)" />
 
-              {/* Natural Forest & Land patches (Surrounding Belitung landscape) */}
-              <g opacity="0.35" fill="#1b2e16">
-                <circle cx="150" cy="120" r="140" />
-                <circle cx="350" cy="100" r="160" />
-                <circle cx="650" cy="130" r="130" />
-                <circle cx="1100" cy="110" r="180" />
-                <circle cx="1450" cy="140" r="170" />
-                <circle cx="200" cy="720" r="160" />
-                <circle cx="500" cy="700" r="180" />
-                <circle cx="1250" cy="680" r="190" />
-                <circle cx="1520" cy="710" r="170" />
-              </g>
+              {/* Natural Forest & Land patches (hidden in white mode) */}
+              {false && (
+                <g opacity="0.35" fill="#1b2e16">
+                  <circle cx="150" cy="120" r="140" />
+                  <circle cx="350" cy="100" r="160" />
+                  <circle cx="650" cy="130" r="130" />
+                  <circle cx="1100" cy="110" r="180" />
+                  <circle cx="1450" cy="140" r="170" />
+                  <circle cx="200" cy="720" r="160" />
+                  <circle cx="500" cy="700" r="180" />
+                  <circle cx="1250" cy="680" r="190" />
+                  <circle cx="1520" cy="710" r="170" />
+                </g>
+              )}
 
-              {/* Cleared Airfield Strip Area (Row B & C, Cols 1 to 8) */}
+              {/* Cleared Airfield Strip Area */}
               <polygon 
                 points="110,260 1490,270 1510,540 1280,540 1220,620 920,620 860,530 110,510" 
-                fill="url(#clearedGround)" 
-                stroke="#607658" 
+                fill="#f0f0f0"
+                stroke="#cccccc"
                 strokeWidth="2" 
                 opacity="0.95"
               />
 
-              {/* Open Sand / Soil Clearing in South-West (Cols 2-4, Row C-D) */}
-              <path 
-                d="M 280 430 Q 380 410, 520 440 Q 640 470, 580 620 Q 450 640, 320 590 Z" 
-                fill="#8a9e7f" 
-                opacity="0.45"
-              />
+              {/* Open Sand / Soil Clearing (hidden in white mode) */}
+              {false && (
+                <path 
+                  d="M 280 430 Q 380 410, 520 440 Q 640 470, 580 620 Q 450 640, 320 590 Z" 
+                  fill="#8a9e7f" 
+                  opacity="0.45"
+                />
+              )}
 
-              {/* 1. RUNWAY (LANDASAN PACU) - Across Cols 1 to 8 in Rows B & C */}
-              {/* Runway Shoulder / Graded Strip */}
-              <rect x="130" y="340" width="1340" height="76" fill="#475543" stroke="#2c3a28" strokeWidth="1.5" rx="4" />
+              {/* 1. RUNWAY (LANDASAN PACU) */}
+              {/* Runway Shoulder */}
+              <rect x="130" y="340" width="1340" height="76" fill="#d0d0d0" stroke="#aaaaaa" strokeWidth="1.5" rx="4" />
               
-              {/* Main Asphalt Runway 18/36 (or 15/33) */}
-              <rect x="150" y="352" width="1300" height="52" fill="url(#asphaltGrad)" stroke="#111827" strokeWidth="2" />
+              {/* Main Asphalt Runway */}
+              <rect x="150" y="352" width="1300" height="52" fill="url(#asphaltGrad)" stroke="#666666" strokeWidth="2" />
 
-              {/* Runway Centerline (Dashed White Markings) */}
-              <line x1="220" y1="378" x2="1380" y2="378" stroke="#ffffff" strokeWidth="3" strokeDasharray="30 22" />
+              {/* Runway Centerline */}
+              <line x1="220" y1="378" x2="1380" y2="378" stroke="#333333" strokeWidth="3" strokeDasharray="30 22" />
 
-              {/* West Threshold Markings (Col 1-2) */}
-              <g fill="#ffffff">
+              {/* West Threshold Markings */}
+              <g fill="#333333">
                 <rect x="160" y="356" width="6" height="44" />
                 <rect x="172" y="358" width="28" height="4" />
                 <rect x="172" y="366" width="28" height="4" />
                 <rect x="172" y="374" width="28" height="4" />
                 <rect x="172" y="382" width="28" height="4" />
                 <rect x="172" y="390" width="28" height="4" />
-                <text x="210" y="383" fill="#ffffff" fontSize="13" fontWeight="900" fontFamily="sans-serif">18</text>
+                <text x="210" y="383" fill="#333333" fontSize="13" fontWeight="900" fontFamily="sans-serif">18</text>
               </g>
 
-              {/* East Threshold Markings (Col 7-8) */}
-              <g fill="#ffffff">
+              {/* East Threshold Markings */}
+              <g fill="#333333">
                 <rect x="1434" y="356" width="6" height="44" />
                 <rect x="1400" y="358" width="28" height="4" />
                 <rect x="1400" y="366" width="28" height="4" />
                 <rect x="1400" y="374" width="28" height="4" />
                 <rect x="1400" y="382" width="28" height="4" />
                 <rect x="1400" y="390" width="28" height="4" />
-                <text x="1382" y="383" fill="#ffffff" fontSize="13" fontWeight="900" fontFamily="sans-serif">36</text>
+                <text x="1382" y="383" fill="#333333" fontSize="13" fontWeight="900" fontFamily="sans-serif">36</text>
               </g>
 
               {/* Blast Pads / Overruns */}
@@ -310,14 +310,13 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
                 <path d="M 1470 354 L 1452 378 L 1470 402" />
               </g>
 
-              {/* 2. TAXIWAYS & APRON COMPLEX (Cols 5-7, Row C) */}
-              {/* Taxiway Links from Runway to Apron */}
-              <path d="M 980 404 L 980 455 L 1260 455 L 1260 404" fill="none" stroke="#2b3827" strokeWidth="26" />
-              <path d="M 980 404 L 980 455 L 1260 455 L 1260 404" fill="none" stroke="#374151" strokeWidth="20" />
+              {/* 2. TAXIWAYS & APRON COMPLEX */}
+              <path d="M 980 404 L 980 455 L 1260 455 L 1260 404" fill="none" stroke="#aaaaaa" strokeWidth="26" />
+              <path d="M 980 404 L 980 455 L 1260 455 L 1260 404" fill="none" stroke="#cccccc" strokeWidth="20" />
               <path d="M 980 404 L 980 455 L 1260 455 L 1260 404" fill="none" stroke="#eab308" strokeWidth="2" strokeDasharray="8 6" />
 
-              {/* Main Apron (Aircraft Parking Stand in Grid C6 - C7) */}
-              <rect x="940" y="445" width="340" height="75" fill="#475569" stroke="#1e293b" strokeWidth="2" rx="2" />
+              {/* Main Apron */}
+              <rect x="940" y="445" width="340" height="75" fill="#dddddd" stroke="#999999" strokeWidth="2" rx="2" />
               
               {/* Apron Aircraft Parking Spots */}
               <g stroke="#facc15" strokeWidth="1.8" fill="none">
@@ -328,33 +327,33 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
                 <line x1="970" y1="485" x2="1220" y2="485" strokeDasharray="6 4" />
               </g>
 
-              {/* 3. AIRPORT BUILDINGS & TERMINALS (Row C & D, Cols 5-7) */}
-              {/* Terminal Building (⑥ in C6-C7) */}
-              <rect x="1000" y="525" width="160" height="38" fill="#b91c1c" stroke="#450a0a" strokeWidth="2" rx="3" />
+              {/* 3. AIRPORT BUILDINGS & TERMINALS */}
+              {/* Terminal Building */}
+              <rect x="1000" y="525" width="160" height="38" fill="#888888" stroke="#555555" strokeWidth="2" rx="3" />
               <text x="1080" y="548" fill="#ffffff" fontSize="11" fontWeight="800" textAnchor="middle" fontFamily="sans-serif">
                 TERMINAL TJQ
               </text>
 
-              {/* Tower ATC (⑤ in C6) */}
-              <rect x="965" y="525" width="28" height="28" fill="#7c3aed" stroke="#3b0764" strokeWidth="1.8" rx="2" />
+              {/* Tower ATC */}
+              <rect x="965" y="525" width="28" height="28" fill="#666666" stroke="#444444" strokeWidth="1.8" rx="2" />
               <text x="979" y="543" fill="#ffffff" fontSize="9" fontWeight="900" textAnchor="middle" fontFamily="sans-serif">
                 ATC
               </text>
 
-              {/* Gedung Teknisi & BMKG (② & ③ in C6) */}
-              <rect x="920" y="525" width="38" height="24" fill="#0284c7" stroke="#075985" strokeWidth="1.5" />
+              {/* Gedung Teknisi */}
+              <rect x="920" y="525" width="38" height="24" fill="#888888" stroke="#666666" strokeWidth="1.5" />
               <text x="939" y="541" fill="#ffffff" fontSize="8" fontWeight="700" textAnchor="middle" fontFamily="sans-serif">
                 TEK
               </text>
 
-              {/* Cargo & AVSEC (⑦ & ⑧ in C7) */}
-              <rect x="1170" y="525" width="60" height="26" fill="#d97706" stroke="#78350f" strokeWidth="1.5" />
+              {/* Cargo */}
+              <rect x="1170" y="525" width="60" height="26" fill="#888888" stroke="#666666" strokeWidth="1.5" />
               <text x="1200" y="542" fill="#ffffff" fontSize="9" fontWeight="800" textAnchor="middle" fontFamily="sans-serif">
                 CARGO
               </text>
 
-              {/* PKP-PK / ARFF Station (① in D2 / C2) */}
-              <rect x="220" y="475" width="45" height="28" fill="#dc2626" stroke="#7f1d1d" strokeWidth="1.8" rx="2" />
+              {/* PKP-PK / ARFF Station */}
+              <rect x="220" y="475" width="45" height="28" fill="#888888" stroke="#555555" strokeWidth="1.8" rx="2" />
               <text x="242" y="493" fill="#ffffff" fontSize="9" fontWeight="900" textAnchor="middle" fontFamily="sans-serif">
                 PKP-PK
               </text>
@@ -528,10 +527,10 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
                 <text x="28" y="3.5" fill="#000000" fontSize="9" fontWeight="800" textAnchor="middle" fontFamily="sans-serif">T</text>
               </g>
 
-              {/* 8. SCALE BAR (0, 0.15, 0.3, 0.6, 0.9, 1.2 KM) in D6 - D8 */}
+              {/* 8. SCALE BAR */}
               <g transform="translate(1080, 740)">
-                <rect x="0" y="0" width="360" height="24" fill="#000000" rx="3" opacity="0.85" />
-                <g fill="#ffffff" fontSize="9" fontWeight="800" fontFamily="sans-serif">
+                <rect x="0" y="0" width="360" height="24" fill="#ffffff" stroke="#000000" strokeWidth="1" rx="3" opacity="0.85" />
+                <g fill="#000000" fontSize="9" fontWeight="800" fontFamily="sans-serif">
                   <text x="15" y="16">0</text>
                   <text x="60" y="16">0,15</text>
                   <text x="115" y="16">0,3</text>
@@ -539,12 +538,11 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
                   <text x="245" y="16">0,9</text>
                   <text x="310" y="16">1,2 KM</text>
                 </g>
-                {/* Alternating black/white scale ticks */}
-                <rect x="15" y="4" width="45" height="3" fill="#ffffff" />
+                <rect x="15" y="4" width="45" height="3" fill="#555555" />
                 <rect x="60" y="4" width="55" height="3" fill="#9ca3af" />
-                <rect x="115" y="4" width="65" height="3" fill="#ffffff" />
+                <rect x="115" y="4" width="65" height="3" fill="#555555" />
                 <rect x="180" y="4" width="65" height="3" fill="#9ca3af" />
-                <rect x="245" y="4" width="65" height="3" fill="#ffffff" />
+                <rect x="245" y="4" width="65" height="3" fill="#555555" />
               </g>
 
             </svg>
@@ -553,9 +551,9 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
             <div className="absolute inset-0 flex flex-col pointer-events-auto">
               
               {/* TOP HEADER ROW: Columns 1..8 */}
-              <div className={`flex ${compact ? 'h-[8.5%]' : 'h-[7%]'} w-full bg-white text-black font-sans font-extrabold ${compact ? 'text-[10px]' : 'text-[11px] sm:text-xs'} border-b-2 border-black`}>
+              <div className={`flex ${compact ? 'h-[8.5%]' : 'h-[7%]'} w-full bg-white/90 text-black font-sans font-extrabold ${compact ? 'text-[10px]' : 'text-[11px] sm:text-xs'} border-b border-black`}>
                 {/* Top-Left Corner Cell */}
-                <div className="w-[4%] flex items-center justify-center border-r-2 border-black bg-slate-100 text-[9px]">
+                <div className="w-[4%] flex items-center justify-center border-r-2 border-black bg-white/80 text-[9px]">
                   #
                 </div>
 
@@ -563,14 +561,14 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
                 {GRID_COLS.map((col) => (
                   <div 
                     key={`top-col-${col}`} 
-                    className="flex-1 flex items-center justify-center border-r border-black/80 font-bold bg-white text-black"
+                    className="flex-1 flex items-center justify-center border-r border-black/80 font-bold bg-transparent text-black"
                   >
                     {col}
                   </div>
                 ))}
 
                 {/* Top-Right Corner Cell */}
-                <div className="w-[4%] flex items-center justify-center border-l-2 border-black bg-slate-100 text-[9px]">
+                <div className="w-[4%] flex items-center justify-center border-l-2 border-black bg-white/80 text-[9px]">
                   #
                 </div>
               </div>
@@ -581,7 +579,7 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
                   <div key={`row-${row}`} className="flex-1 flex w-full border-b border-black/70">
                     
                     {/* Left Row Header (A..D) */}
-                    <div className={`w-[4%] bg-white text-black font-sans font-extrabold ${compact ? 'text-[10px]' : 'text-xs sm:text-sm'} flex items-center justify-center border-r-2 border-black`}>
+                    <div className={`w-[4%] bg-white/90 text-black font-sans font-extrabold ${compact ? 'text-[10px]' : 'text-xs sm:text-sm'} flex items-center justify-center border-r-2 border-black`}>
                       {row}
                     </div>
 
@@ -684,7 +682,7 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
                     })}
 
                     {/* Right Row Header (A..D) */}
-                    <div className={`w-[4%] bg-white text-black font-sans font-extrabold ${compact ? 'text-[10px]' : 'text-xs sm:text-sm'} flex items-center justify-center border-l-2 border-black`}>
+                    <div className={`w-[4%] bg-white/90 text-black font-sans font-extrabold ${compact ? 'text-[10px]' : 'text-xs sm:text-sm'} flex items-center justify-center border-l-2 border-black`}>
                       {row}
                     </div>
                   </div>
@@ -692,9 +690,9 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
               </div>
 
               {/* BOTTOM FOOTER ROW: Columns 1..8 */}
-              <div className={`flex ${compact ? 'h-[8.5%]' : 'h-[7%]'} w-full bg-white text-black font-sans font-extrabold ${compact ? 'text-[10px]' : 'text-[11px] sm:text-xs'} border-t-2 border-black`}>
+              <div className={`flex ${compact ? 'h-[8.5%]' : 'h-[7%]'} w-full bg-white/90 text-black font-sans font-extrabold ${compact ? 'text-[10px]' : 'text-[11px] sm:text-xs'} border-t border-black`}>
                 {/* Bottom-Left Corner */}
-                <div className="w-[4%] flex items-center justify-center border-r-2 border-black bg-slate-100 text-[9px]">
+                <div className="w-[4%] flex items-center justify-center border-r-2 border-black bg-white/80 text-[9px]">
                   #
                 </div>
 
@@ -702,14 +700,14 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
                 {GRID_COLS.map((col) => (
                   <div 
                     key={`bottom-col-${col}`} 
-                    className="flex-1 flex items-center justify-center border-r border-black/80 font-bold bg-white text-black"
+                    className="flex-1 flex items-center justify-center border-r border-black/80 font-bold bg-transparent text-black"
                   >
                     {col}
                   </div>
                 ))}
 
                 {/* Bottom-Right Corner */}
-                <div className="w-[4%] flex items-center justify-center border-l-2 border-black bg-slate-100 text-[9px]">
+                <div className="w-[4%] flex items-center justify-center border-l-2 border-black bg-white/80 text-[9px]">
                   #
                 </div>
               </div>

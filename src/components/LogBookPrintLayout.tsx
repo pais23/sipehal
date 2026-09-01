@@ -177,54 +177,53 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
           {/* 2. TOP SECTION: LEFT META INFO + CENTER/RIGHT AIRPORT GRID MAP */}
           <div className="flex items-stretch gap-4 mb-3">
 
-            {/* Left Meta Info block (Structured Table with crisp proportional font) */}
-            <div className="w-[300px] shrink-0 font-sans flex flex-col justify-between py-0.5">
+            {/* Left Meta Info block */}
+            <div className="w-[260px] shrink-0 font-sans flex flex-col justify-start py-0.5">
               <table className="w-full text-xs uppercase border-collapse">
                 <tbody>
                   <tr className="border-b border-slate-200">
-                    <td className="py-1 w-36 font-black text-black whitespace-nowrap text-[11px] sm:text-[11.5px]">TANGGAL</td>
-                    <td className="py-1 w-3 text-center font-bold text-black">:</td>
-                    <td className="py-1 font-bold text-black whitespace-nowrap text-[11.5px]">{report.tanggal}</td>
+                    <td className="py-1 font-normal text-black whitespace-nowrap text-[11px] pr-1">TANGGAL</td>
+                    <td className="py-1 w-3 text-center font-normal text-black">:</td>
+                    <td className="py-1 font-normal text-black text-[11px]">{report.tanggal}</td>
                   </tr>
                   <tr className="border-b border-slate-200">
-                    <td className="py-1 w-36 font-black text-black whitespace-nowrap text-[11px] sm:text-[11.5px]">WAKTU</td>
-                    <td className="py-1 w-3 text-center font-bold text-black">:</td>
-                    <td className="py-1 font-bold text-black whitespace-nowrap text-[11.5px] font-mono">{report.waktu}</td>
+                    <td className="py-1 font-normal text-black whitespace-nowrap text-[11px] pr-1">WAKTU</td>
+                    <td className="py-1 w-3 text-center font-normal text-black">:</td>
+                    <td className="py-1 font-normal text-black text-[11px]">{report.waktu}</td>
                   </tr>
                   <tr className="border-b border-slate-200">
-                    <td className="py-1 w-36 font-black text-black whitespace-nowrap text-[11px] sm:text-[11.5px]">SHIFT</td>
-                    <td className="py-1 w-3 text-center font-bold text-black">:</td>
-                    <td className="py-1 font-bold text-black whitespace-nowrap text-[11.5px]">{report.shift}</td>
+                    <td className="py-1 font-normal text-black whitespace-nowrap text-[11px] pr-1">SHIFT</td>
+                    <td className="py-1 w-3 text-center font-normal text-black">:</td>
+                    <td className="py-1 font-normal text-black text-[11px]">{report.shift}</td>
                   </tr>
                   <tr className="border-b border-slate-200">
-                    <td className="py-1 w-36 font-black text-black whitespace-nowrap text-[11px] sm:text-[11.5px]">KONDISI CUACA</td>
-                    <td className="py-1 w-3 text-center font-bold text-black">:</td>
-                    <td className="py-1 font-bold text-black whitespace-nowrap text-[11.5px]">{report.kondisiCuaca}</td>
+                    <td className="py-1 font-normal text-black whitespace-nowrap text-[11px] pr-1">KONDISI CUACA</td>
+                    <td className="py-1 w-3 text-center font-normal text-black">:</td>
+                    <td className="py-1 font-normal text-black text-[11px]">{report.kondisiCuaca}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 w-36 font-black text-black whitespace-nowrap text-[11px] sm:text-[11.5px]">KONDISI PENCAHAYAAN</td>
-                    <td className="py-1 w-3 text-center font-bold text-black">:</td>
-                    <td className="py-1 font-bold text-black whitespace-nowrap text-[11.5px]">{report.kondisiPencahayaan}</td>
+                    <td className="py-1 font-normal text-black whitespace-nowrap text-[11px] pr-1">KONDISI PENCAHAYAAN</td>
+                    <td className="py-1 w-3 text-center font-normal text-black">:</td>
+                    <td className="py-1 font-normal text-black text-[11px]">{report.kondisiPencahayaan}</td>
                   </tr>
                 </tbody>
               </table>
-
-              {/* <div className="pt-2 text-[9.5px] font-sans font-black text-black uppercase tracking-wide leading-snug border-t border-black/40 mt-1.5">
-                SESUAIKAN DENGAN GRID MAP<br />
-                MASING-MASING BANDARA
-              </div> */}
             </div>
 
-            {/* Right: Grid Map Layout (Compact and proportional) */}
+            {/* Center: Grid Map Layout */}
             <div className="flex-1 min-w-0">
               <AirportGridMap
                 mode="markers"
                 findings={report.temuan}
                 interactive={false}
                 compact={true}
+                showLegend={false}
                 className="border border-black shadow-none rounded-none"
               />
             </div>
+
+            {/* Right Spacer: matches left column width to center the map */}
+            <div className="w-[260px] shrink-0" />
 
           </div>
 
@@ -239,7 +238,7 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
                   <th className="border border-black py-2 px-1.5 w-20 text-[11px]">JUMLAH HEWAN LIAR</th>
                   <th className="border border-black py-2 px-2 text-[11px]">
                     TINDAK LANJUT<br />
-                    <span className="font-normal text-[9px] normal-case text-slate-700">(dapat meliputi tindakan reaktif dan proaktif)</span>
+                    <span className="font-normal text-[10.5px] normal-case text-slate-700">(dapat meliputi tindakan reaktif dan proaktif)</span>
                   </th>
                   <th className="border border-black py-2 px-2 w-64 text-[11px]">
                     REAKSI HEWAN LIAR SETELAH DILAKUKAN TINDAK LANJUT
@@ -268,17 +267,7 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
                   </tr>
                 ))}
 
-                {/* Blank rows if findings are few, matching traditional logbook sheets */}
-                {report.temuan.length < 2 && Array.from({ length: 2 - report.temuan.length }).map((_, idx) => (
-                  <tr key={`blank-${idx}`} className="border-b border-black h-8 text-black">
-                    <td className="border border-black py-2 px-1 text-center font-bold text-[11.5px]">{report.temuan.length + idx + 1}</td>
-                    <td className="border border-black py-2 px-1 text-center"></td>
-                    <td className="border border-black py-2 px-1"></td>
-                    <td className="border border-black py-2 px-1 text-center"></td>
-                    <td className="border border-black py-2 px-1"></td>
-                    <td className="border border-black py-2 px-1"></td>
-                  </tr>
-                ))}
+
               </tbody>
             </table>
           </div>
