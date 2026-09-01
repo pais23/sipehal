@@ -50,7 +50,7 @@
     margin: 0 auto !important;
     padding: 3mm !important;
     box-shadow: none !important;
-    border: 1.5px solid black !important;
+    border: none !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }

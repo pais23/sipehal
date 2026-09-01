@@ -13,6 +13,7 @@ interface AirportGridMapProps {
   className?: string;
   interactive?: boolean;
   showLegend?: boolean;
+  compact?: boolean;
 }
 
 export const AirportGridMap: React.FC<AirportGridMapProps> = ({
@@ -24,7 +25,8 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
   highlightCells = [],
   className = '',
   interactive = true,
-  showLegend = true
+  showLegend = true,
+  compact = false
 }) => {
   const [hoveredCell, setHoveredCell] = useState<string | null>(null);
   const [zoom, setZoom] = useState<number>(1);
@@ -183,16 +185,16 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
         </div>
       )}
 
-      {/* Map Canvas / Stage (8 Columns x 4 Rows Aspect Ratio 2:1) */}
+      {/* Map Canvas / Stage (8 Columns x 4 Rows Aspect Ratio) */}
       <div 
-        className="relative w-full overflow-hidden bg-[#2A342C] flex items-center justify-center p-1 sm:p-2"
+        className={`relative w-full overflow-hidden bg-[#2A342C] flex items-center justify-center ${compact ? 'p-0.5' : 'p-1 sm:p-2'}`}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >
         <div 
-          className="relative transition-transform duration-75 origin-center w-full aspect-[2.1/1] bg-[#1a2818] border-2 border-black shadow-lg"
+          className={`relative transition-transform duration-75 origin-center w-full ${compact ? 'aspect-[2.35/1]' : 'aspect-[2.1/1]'} bg-[#1a2818] border ${compact ? 'border-black/60' : 'border-2 border-black'} shadow-sm`}
           style={{
             transform: interactive ? `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)` : undefined
           }}
@@ -551,7 +553,7 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
             <div className="absolute inset-0 flex flex-col pointer-events-auto">
               
               {/* TOP HEADER ROW: Columns 1..8 */}
-              <div className="flex h-[7%] w-full bg-white text-black font-sans font-extrabold text-[11px] sm:text-xs border-b-2 border-black">
+              <div className={`flex ${compact ? 'h-[8.5%]' : 'h-[7%]'} w-full bg-white text-black font-sans font-extrabold ${compact ? 'text-[10px]' : 'text-[11px] sm:text-xs'} border-b-2 border-black`}>
                 {/* Top-Left Corner Cell */}
                 <div className="w-[4%] flex items-center justify-center border-r-2 border-black bg-slate-100 text-[9px]">
                   #
@@ -579,7 +581,7 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
                   <div key={`row-${row}`} className="flex-1 flex w-full border-b border-black/70">
                     
                     {/* Left Row Header (A..D) */}
-                    <div className="w-[4%] bg-white text-black font-sans font-extrabold text-xs sm:text-sm flex items-center justify-center border-r-2 border-black">
+                    <div className={`w-[4%] bg-white text-black font-sans font-extrabold ${compact ? 'text-[10px]' : 'text-xs sm:text-sm'} flex items-center justify-center border-r-2 border-black`}>
                       {row}
                     </div>
 
@@ -630,7 +632,7 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
                           }}
                         >
                           {/* Corner Coordinate watermark label for ultra clear reference */}
-                          <span className="absolute top-1 left-1.5 font-mono text-[9px] font-bold text-white/50 pointer-events-none drop-shadow-xs">
+                          <span className={`absolute top-0.5 left-1 font-mono ${compact ? 'text-[8px]' : 'text-[9px]'} font-bold text-white/50 pointer-events-none drop-shadow-xs`}>
                             {cellCode}
                           </span>
 
@@ -646,9 +648,9 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
 
                           {/* Mode: Markers on Grid (for specific report logbook) */}
                           {(mode === 'markers' || mode === 'readonly') && hasFindings && !isSelected && (
-                            <div className="flex flex-col items-center justify-center z-20 pointer-events-none scale-90 sm:scale-100">
+                            <div className={`flex flex-col items-center justify-center z-20 pointer-events-none ${compact ? 'scale-75' : 'scale-90 sm:scale-100'}`}>
                               <div className="relative flex items-center justify-center">
-                                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-rose-600 text-white font-bold text-xs flex items-center justify-center shadow-lg ring-2 ring-white">
+                                <div className={`${compact ? 'w-5 h-5 text-[10px]' : 'w-6 h-6 sm:w-7 sm:h-7 text-xs'} rounded-full bg-rose-600 text-white font-bold flex items-center justify-center shadow-lg ring-2 ring-white`}>
                                   {cellFindings[0].no}
                                 </div>
                                 {cellFindings.length > 1 && (
@@ -657,7 +659,7 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
                                   </span>
                                 )}
                               </div>
-                              <span className="bg-black/90 text-white text-[9px] px-1.5 py-0.5 rounded truncate max-w-[80px] text-center font-bold mt-1 shadow-md border border-white/30">
+                              <span className={`bg-black/90 text-white ${compact ? 'text-[8px] px-1 py-0.2 max-w-[70px]' : 'text-[9px] px-1.5 py-0.5 max-w-[80px]'} rounded truncate text-center font-bold mt-0.5 shadow-md border border-white/30`}>
                                 {cellFindings[0].namaSpesies.split(' ')[0]} ({cellFindings.reduce((acc, curr) => acc + curr.jumlah, 0)})
                               </span>
                             </div>
@@ -682,7 +684,7 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
                     })}
 
                     {/* Right Row Header (A..D) */}
-                    <div className="w-[4%] bg-white text-black font-sans font-extrabold text-xs sm:text-sm flex items-center justify-center border-l-2 border-black">
+                    <div className={`w-[4%] bg-white text-black font-sans font-extrabold ${compact ? 'text-[10px]' : 'text-xs sm:text-sm'} flex items-center justify-center border-l-2 border-black`}>
                       {row}
                     </div>
                   </div>
@@ -690,7 +692,7 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
               </div>
 
               {/* BOTTOM FOOTER ROW: Columns 1..8 */}
-              <div className="flex h-[7%] w-full bg-white text-black font-sans font-extrabold text-[11px] sm:text-xs border-t-2 border-black">
+              <div className={`flex ${compact ? 'h-[8.5%]' : 'h-[7%]'} w-full bg-white text-black font-sans font-extrabold ${compact ? 'text-[10px]' : 'text-[11px] sm:text-xs'} border-t-2 border-black`}>
                 {/* Bottom-Left Corner */}
                 <div className="w-[4%] flex items-center justify-center border-r-2 border-black bg-slate-100 text-[9px]">
                   #
@@ -719,8 +721,8 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
 
       {/* Official Map Legend / Keterangan (Identical to Appendix 3.a) */}
       {showLegend && (
-        <div className="p-3 bg-[#FBFBFA] border-t border-black/60 text-[10.5px] text-black font-sans">
-          <div className="font-extrabold text-xs mb-1.5 uppercase text-black flex items-center justify-between">
+        <div className={`${compact ? 'p-1.5' : 'p-3'} bg-[#FBFBFA] border-t border-black/60 text-black font-sans`}>
+          <div className={`font-extrabold ${compact ? 'text-[9px] mb-1' : 'text-xs mb-1.5'} uppercase text-black flex items-center justify-between`}>
             <span>KETERANGAN FASILITAS & JALUR OPERASI:</span>
             {hoveredCell && (
               <span className="font-mono text-xs bg-black text-white px-2 py-0.5 rounded font-bold">
@@ -729,80 +731,80 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
             )}
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] leading-tight">
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5">
-                <span className="w-4 h-4 rounded-full bg-red-600 text-white text-[9px] font-bold flex items-center justify-center">1</span>
-                <span>PKP-PK (ARFF)</span>
+          <div className={`grid grid-cols-2 sm:grid-cols-4 ${compact ? 'gap-x-2 gap-y-0.5 text-[8.5px] leading-tight' : 'gap-2 text-[10px] leading-tight'}`}>
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-3 h-3 text-[7.5px]' : 'w-4 h-4 text-[9px]'} rounded-full bg-red-600 text-white font-bold flex items-center justify-center shrink-0`}>1</span>
+                <span className="truncate">PKP-PK (ARFF)</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-4 h-4 rounded-full bg-yellow-500 text-black text-[9px] font-bold flex items-center justify-center">2</span>
-                <span>Gedung Teknisi</span>
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-3 h-3 text-[7.5px]' : 'w-4 h-4 text-[9px]'} rounded-full bg-yellow-500 text-black font-bold flex items-center justify-center shrink-0`}>2</span>
+                <span className="truncate">Gedung Teknisi</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-4 h-4 rounded-full bg-green-600 text-white text-[9px] font-bold flex items-center justify-center">3</span>
-                <span>Meteorologi (BMKG)</span>
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-3 h-3 text-[7.5px]' : 'w-4 h-4 text-[9px]'} rounded-full bg-green-600 text-white font-bold flex items-center justify-center shrink-0`}>3</span>
+                <span className="truncate">Meteorologi (BMKG)</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-4 h-4 rounded-full bg-pink-600 text-white text-[9px] font-bold flex items-center justify-center">4</span>
-                <span>Kantor Tata Usaha</span>
-              </div>
-            </div>
-
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5">
-                <span className="w-4 h-4 rounded-full bg-purple-600 text-white text-[9px] font-bold flex items-center justify-center">5</span>
-                <span>Tower (ATC)</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-4 h-4 rounded-full bg-cyan-600 text-white text-[9px] font-bold flex items-center justify-center">6</span>
-                <span>Terminal Penumpang</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-4 h-4 rounded-full bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center">7</span>
-                <span>AVSEC</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-4 h-4 rounded-full bg-amber-600 text-black text-[9px] font-bold flex items-center justify-center">8</span>
-                <span>Cargo</span>
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-3 h-3 text-[7.5px]' : 'w-4 h-4 text-[9px]'} rounded-full bg-pink-600 text-white font-bold flex items-center justify-center shrink-0`}>4</span>
+                <span className="truncate">Kantor Tata Usaha</span>
               </div>
             </div>
 
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5">
-                <span className="w-3.5 h-3.5 rounded-full bg-red-600 border border-black inline-block"></span>
-                <span>Isolated Area</span>
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-3 h-3 text-[7.5px]' : 'w-4 h-4 text-[9px]'} rounded-full bg-purple-600 text-white font-bold flex items-center justify-center shrink-0`}>5</span>
+                <span className="truncate">Tower (ATC)</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-3.5 h-3.5 rounded-full bg-yellow-400 border border-black flex items-center justify-center text-[8px] font-bold">+</span>
-                <span>Staging Area</span>
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-3 h-3 text-[7.5px]' : 'w-4 h-4 text-[9px]'} rounded-full bg-cyan-600 text-white font-bold flex items-center justify-center shrink-0`}>6</span>
+                <span className="truncate">Terminal Penumpang</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-3.5 h-3.5 text-red-600 font-bold">▲</span>
-                <span>Rendezvous Point</span>
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-3 h-3 text-[7.5px]' : 'w-4 h-4 text-[9px]'} rounded-full bg-blue-600 text-white font-bold flex items-center justify-center shrink-0`}>7</span>
+                <span className="truncate">AVSEC</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-3.5 h-3.5 text-blue-600">💧</span>
-                <span>Sumber Air / Kolam</span>
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-3 h-3 text-[7.5px]' : 'w-4 h-4 text-[9px]'} rounded-full bg-amber-600 text-black font-bold flex items-center justify-center shrink-0`}>8</span>
+                <span className="truncate">Cargo</span>
               </div>
             </div>
 
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5">
-                <span className="w-4 h-1 bg-red-600 inline-block"></span>
-                <span>Pagar Bandara</span>
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5'} rounded-full bg-red-600 border border-black inline-block shrink-0`}></span>
+                <span className="truncate">Isolated Area</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-4 h-1 bg-yellow-400 border-b border-black inline-block"></span>
-                <span>Jalur Utama Darurat</span>
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-2.5 h-2.5 text-[7px]' : 'w-3.5 h-3.5 text-[8px]'} rounded-full bg-yellow-400 border border-black flex items-center justify-center font-bold shrink-0`}>+</span>
+                <span className="truncate">Staging Area</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-4 h-1 bg-lime-500 border-b border-dashed border-black inline-block"></span>
-                <span>Akses Evakuasi</span>
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'text-[8px]' : 'text-[10px]'} text-red-600 font-bold shrink-0`}>▲</span>
+                <span className="truncate">Rendezvous Point</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-4 h-1 bg-sky-400 border-b border-dashed border-black inline-block"></span>
-                <span>Batas Tanggung Jawab</span>
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'text-[8px]' : 'text-[10px]'} text-blue-600 shrink-0`}>💧</span>
+                <span className="truncate">Sumber Air / Kolam</span>
+              </div>
+            </div>
+
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-3 h-0.5' : 'w-4 h-1'} bg-red-600 inline-block shrink-0`}></span>
+                <span className="truncate">Pagar Bandara</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-3 h-0.5' : 'w-4 h-1'} bg-yellow-400 border-b border-black inline-block shrink-0`}></span>
+                <span className="truncate">Jalur Utama Darurat</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-3 h-0.5' : 'w-4 h-1'} bg-lime-500 border-b border-dashed border-black inline-block shrink-0`}></span>
+                <span className="truncate">Akses Evakuasi</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className={`${compact ? 'w-3 h-0.5' : 'w-4 h-1'} bg-sky-400 border-b border-dashed border-black inline-block shrink-0`}></span>
+                <span className="truncate">Batas Tanggung Jawab</span>
               </div>
             </div>
           </div>

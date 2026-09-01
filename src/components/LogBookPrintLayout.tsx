@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { WildlifeReport } from '../types';
 import { AirportGridMap } from './AirportGridMap';
-import { Printer, Download, ArrowLeft, Check, Sparkles } from 'lucide-react';
+import { Printer, Download, ArrowLeft, Check } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { toPng } from 'html-to-image';
 
@@ -31,11 +31,13 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
       const dataUrl = await toPng(printRef.current, {
         quality: 1,
         backgroundColor: '#ffffff',
-        pixelRatio: 2.2,
+        pixelRatio: 2.5,
         cacheBust: true,
         style: {
           margin: '0',
-          transform: 'none'
+          transform: 'none',
+          border: 'none',
+          boxShadow: 'none'
         }
       });
 
@@ -61,12 +63,12 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
 
       const pageWidth = 297; // mm
       const pageHeight = 210; // mm
-      const margin = 5; // 5mm margin on outer edges
+      const margin = 6; // 6mm margin on outer edges for clean, borderless output
 
-      const maxAvailableWidth = pageWidth - (margin * 2); // 287mm
-      const maxAvailableHeight = pageHeight - (margin * 2); // 200mm
+      const maxAvailableWidth = pageWidth - (margin * 2); // 285mm
+      const maxAvailableHeight = pageHeight - (margin * 2); // 198mm
 
-      // Calculate width & height to ensure ALL content (header to signature) fits in 1 page
+      // Calculate width & height to ensure ALL content fits gracefully on 1 page
       let finalWidth = maxAvailableWidth;
       let finalHeight = maxAvailableWidth * aspectRatio;
 
@@ -81,7 +83,7 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
 
       pdf.addImage(dataUrl, 'PNG', posX, posY, finalWidth, finalHeight, undefined, 'FAST');
       pdf.save(`LOGBOOK_HEWAN_LIAR_${report.tanggal}_${report.shift}_${report.id}.pdf`);
-      
+
       setExportSuccess(true);
       setTimeout(() => setExportSuccess(false), 3000);
     } catch (err) {
@@ -151,94 +153,95 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
         </div>
       </div>
 
-      {/* OFFICIAL LOG BOOK DOCUMENT CONTAINER */}
+      {/* OFFICIAL LOG BOOK DOCUMENT CONTAINER (Borderless canvas for clean export) */}
       <div className="overflow-x-auto bg-[#E9E5DE] p-2 sm:p-6 rounded-2xl flex justify-center shadow-inner print-container print:p-0 print:bg-white">
-        <div 
+        <div
           ref={printRef}
           id="official-logbook-document"
-          className="bg-white text-black p-4 sm:p-5 w-[1140px] shadow-2xl border-2 border-black font-sans print:shadow-none print:border-none print:m-0 print:p-2"
+          className="bg-white text-black p-6 sm:p-7 w-[1080px] shadow-xl font-sans print:shadow-none print:border-none print:m-0 print:p-4"
           style={{ boxSizing: 'border-box' }}
         >
           {/* 1. DOCUMENT HEADER (Identical to reference template) */}
-          <div className="text-center mb-2.5 pb-1 border-b border-black/20">
-            <h1 className="text-base sm:text-lg font-black uppercase tracking-wider font-sans leading-tight text-black">
+          <div className="text-center mb-3 pb-1.5 border-b border-black/30">
+            <h1 className="text-lg sm:text-xl font-black uppercase tracking-wider font-sans leading-tight text-black">
               LOG BOOK
             </h1>
             <h2 className="text-xs sm:text-sm font-extrabold uppercase tracking-wide mt-0.5 text-black">
               PEMANTAUAN HEWAN LIAR DI WILAYAH OPERASI BANDARA
             </h2>
-            <p className="text-[10px] font-bold text-black mt-0.5">
+            <p className="text-[10.5px] font-bold text-slate-800 mt-0.5">
               (*Hewan Liar termasuk Burung)
             </p>
           </div>
 
           {/* 2. TOP SECTION: LEFT META INFO + CENTER/RIGHT AIRPORT GRID MAP */}
-          <div className="flex items-start gap-4 mb-2.5">
-            
-            {/* Left Meta Info block (Structured Table with No-Wrap for perfect single-line alignment) */}
-            <div className="w-[300px] shrink-0 text-xs font-bold uppercase pt-0.5 text-black font-sans">
-              <table className="w-full text-[10.5px] uppercase border-collapse">
+          <div className="flex items-stretch gap-4 mb-3">
+
+            {/* Left Meta Info block (Structured Table with crisp proportional font) */}
+            <div className="w-[300px] shrink-0 font-sans flex flex-col justify-between py-0.5">
+              <table className="w-full text-xs uppercase border-collapse">
                 <tbody>
-                  <tr>
-                    <td className="py-0.5 w-36 font-black text-black whitespace-nowrap">TANGGAL</td>
-                    <td className="py-0.5 w-3 text-center font-bold">:</td>
-                    <td className="py-0.5 font-bold text-black whitespace-nowrap">{report.tanggal}</td>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-1 w-36 font-black text-black whitespace-nowrap text-[11px] sm:text-[11.5px]">TANGGAL</td>
+                    <td className="py-1 w-3 text-center font-bold text-black">:</td>
+                    <td className="py-1 font-bold text-black whitespace-nowrap text-[11.5px]">{report.tanggal}</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-1 w-36 font-black text-black whitespace-nowrap text-[11px] sm:text-[11.5px]">WAKTU</td>
+                    <td className="py-1 w-3 text-center font-bold text-black">:</td>
+                    <td className="py-1 font-bold text-black whitespace-nowrap text-[11.5px] font-mono">{report.waktu}</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-1 w-36 font-black text-black whitespace-nowrap text-[11px] sm:text-[11.5px]">SHIFT</td>
+                    <td className="py-1 w-3 text-center font-bold text-black">:</td>
+                    <td className="py-1 font-bold text-black whitespace-nowrap text-[11.5px]">{report.shift}</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-1 w-36 font-black text-black whitespace-nowrap text-[11px] sm:text-[11.5px]">KONDISI CUACA</td>
+                    <td className="py-1 w-3 text-center font-bold text-black">:</td>
+                    <td className="py-1 font-bold text-black whitespace-nowrap text-[11.5px]">{report.kondisiCuaca}</td>
                   </tr>
                   <tr>
-                    <td className="py-0.5 w-36 font-black text-black whitespace-nowrap">WAKTU</td>
-                    <td className="py-0.5 w-3 text-center font-bold">:</td>
-                    <td className="py-0.5 font-bold text-black whitespace-nowrap">{report.waktu}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-0.5 w-36 font-black text-black whitespace-nowrap">SHIFT</td>
-                    <td className="py-0.5 w-3 text-center font-bold">:</td>
-                    <td className="py-0.5 font-bold text-black whitespace-nowrap">{report.shift}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-0.5 w-36 font-black text-black whitespace-nowrap">KONDISI CUACA</td>
-                    <td className="py-0.5 w-3 text-center font-bold">:</td>
-                    <td className="py-0.5 font-bold text-black whitespace-nowrap">{report.kondisiCuaca}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-0.5 w-36 font-black text-black whitespace-nowrap">KONDISI PENCAHAYAAN</td>
-                    <td className="py-0.5 w-3 text-center font-bold">:</td>
-                    <td className="py-0.5 font-bold text-black whitespace-nowrap">{report.kondisiPencahayaan}</td>
+                    <td className="py-1 w-36 font-black text-black whitespace-nowrap text-[11px] sm:text-[11.5px]">KONDISI PENCAHAYAAN</td>
+                    <td className="py-1 w-3 text-center font-bold text-black">:</td>
+                    <td className="py-1 font-bold text-black whitespace-nowrap text-[11.5px]">{report.kondisiPencahayaan}</td>
                   </tr>
                 </tbody>
               </table>
 
-              <div className="pt-2 text-[9.5px] font-sans font-extrabold text-black uppercase tracking-wide leading-snug border-t border-black/30 mt-2">
+              {/* <div className="pt-2 text-[9.5px] font-sans font-black text-black uppercase tracking-wide leading-snug border-t border-black/40 mt-1.5">
                 SESUAIKAN DENGAN GRID MAP<br />
                 MASING-MASING BANDARA
-              </div>
+              </div> */}
             </div>
 
-            {/* Right: Grid Map Layout */}
+            {/* Right: Grid Map Layout (Compact and proportional) */}
             <div className="flex-1 min-w-0">
               <AirportGridMap
                 mode="markers"
                 findings={report.temuan}
                 interactive={false}
-                className="border-2 border-black shadow-xs"
+                compact={true}
+                className="border border-black shadow-none rounded-none"
               />
             </div>
 
           </div>
 
-          {/* 3. FINDINGS DATA TABLE (Exact 6 columns matching reference image) */}
-          <div className="mb-2">
-            <table className="w-full border-collapse border-2 border-black text-[10px]">
+          {/* 3. FINDINGS DATA TABLE (Clear, readable, proportional explanations) */}
+          <div className="mb-3">
+            <table className="w-full border-collapse border border-black text-[11px]">
               <thead>
-                <tr className="bg-white font-black uppercase text-center border-b-2 border-black text-black">
-                  <th className="border-2 border-black p-1.5 w-10">NO</th>
-                  <th className="border-2 border-black p-1.5 w-28">LOKASI PENGAMATAN</th>
-                  <th className="border-2 border-black p-1.5 w-48">NAMA/SPESIES HEWAN LIAR</th>
-                  <th className="border-2 border-black p-1.5 w-24">JUMLAH HEWAN LIAR</th>
-                  <th className="border-2 border-black p-1.5">
+                <tr className="bg-slate-100/90 font-black uppercase text-center border-b border-black text-black">
+                  <th className="border border-black py-2 px-1 w-10 text-[11px]">NO</th>
+                  <th className="border border-black py-2 px-1.5 w-24 text-[11px]">LOKASI PENGAMATAN</th>
+                  <th className="border border-black py-2 px-2 w-44 text-[11px]">NAMA/SPESIES HEWAN LIAR</th>
+                  <th className="border border-black py-2 px-1.5 w-20 text-[11px]">JUMLAH HEWAN LIAR</th>
+                  <th className="border border-black py-2 px-2 text-[11px]">
                     TINDAK LANJUT<br />
-                    <span className="font-normal text-[8.5px] normal-case">(dapat meliputi tindakan reaktif dan proaktif)</span>
+                    <span className="font-normal text-[9px] normal-case text-slate-700">(dapat meliputi tindakan reaktif dan proaktif)</span>
                   </th>
-                  <th className="border-2 border-black p-1.5 w-60">
+                  <th className="border border-black py-2 px-2 w-64 text-[11px]">
                     REAKSI HEWAN LIAR SETELAH DILAKUKAN TINDAK LANJUT
                   </th>
                 </tr>
@@ -246,20 +249,20 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
               <tbody>
                 {report.temuan.map((f, i) => (
                   <tr key={f.id || i} className="border-b border-black text-black">
-                    <td className="border border-black p-1 text-center font-bold">{f.no || i + 1}</td>
-                    <td className="border border-black p-1 text-center font-mono font-black text-[11px] bg-slate-50/50">
+                    <td className="border border-black py-2 px-1 text-center font-bold text-[11.5px]">{f.no || i + 1}</td>
+                    <td className="border border-black py-2 px-1.5 text-center font-mono font-black text-[12.5px] bg-slate-50/70">
                       {f.lokasiGrid}
                     </td>
-                    <td className="border border-black p-1 font-semibold">
+                    <td className="border border-black py-2 px-2 font-bold text-[11.5px]">
                       {f.namaSpesies}
                     </td>
-                    <td className="border border-black p-1 text-center font-bold">
+                    <td className="border border-black py-2 px-1 text-center font-black text-[12px]">
                       {f.jumlah}
                     </td>
-                    <td className="border border-black p-1 text-[9.5px] leading-tight">
+                    <td className="border border-black py-2 px-2.5 text-[11.5px] leading-relaxed text-black">
                       {f.tindakLanjut || '-'}
                     </td>
-                    <td className="border border-black p-1 text-[9.5px] leading-tight">
+                    <td className="border border-black py-2 px-2.5 text-[11.5px] leading-relaxed text-black">
                       {f.reaksi || '-'}
                     </td>
                   </tr>
@@ -267,42 +270,42 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
 
                 {/* Blank rows if findings are few, matching traditional logbook sheets */}
                 {report.temuan.length < 2 && Array.from({ length: 2 - report.temuan.length }).map((_, idx) => (
-                  <tr key={`blank-${idx}`} className="border-b border-black h-7 text-black">
-                    <td className="border border-black p-1 text-center">{report.temuan.length + idx + 1}</td>
-                    <td className="border border-black p-1 text-center"></td>
-                    <td className="border border-black p-1"></td>
-                    <td className="border border-black p-1 text-center"></td>
-                    <td className="border border-black p-1"></td>
-                    <td className="border border-black p-1"></td>
+                  <tr key={`blank-${idx}`} className="border-b border-black h-8 text-black">
+                    <td className="border border-black py-2 px-1 text-center font-bold text-[11.5px]">{report.temuan.length + idx + 1}</td>
+                    <td className="border border-black py-2 px-1 text-center"></td>
+                    <td className="border border-black py-2 px-1"></td>
+                    <td className="border border-black py-2 px-1 text-center"></td>
+                    <td className="border border-black py-2 px-1"></td>
+                    <td className="border border-black py-2 px-1"></td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
 
-          {/* 4. FOOTER: PETUGAS & TANDA TANGAN (Matching bottom-left placement) */}
-          <div className="pt-0.5 text-[10px] font-sans text-black">
-            <div className="text-left w-72 uppercase font-bold">
-              <p className="font-extrabold text-[11px]">PETUGAS</p>
-              
+          {/* 4. FOOTER: PETUGAS & TANDA TANGAN */}
+          <div className="pt-1 text-[11.5px] font-sans text-black">
+            <div className="text-left w-80 uppercase font-bold">
+              <p className="font-black text-[12px] tracking-wide">PETUGAS</p>
+
               <div className="flex items-center gap-2 mt-1">
-                <span className="w-24">NAMA</span>
+                <span className="w-24 text-[11.5px] font-bold">NAMA</span>
                 <span>:</span>
-                <span className="font-bold text-[11px]">{report.namaPetugas || '-'}</span>
+                <span className="font-black text-[12px]">{report.namaPetugas || '-'}</span>
               </div>
-              
-              <div className="flex items-start gap-2 mt-1">
-                <span className="w-24">TANDA TANGAN</span>
+
+              <div className="flex items-start gap-2 mt-1.5">
+                <span className="w-24 text-[11.5px] font-bold">TANDA TANGAN</span>
                 <span>:</span>
-                <div className="w-40 h-11 border-b border-black flex items-center justify-center -mt-1">
+                <div className="w-44 h-12 border-b border-black flex items-center justify-center -mt-1">
                   {report.tandaTangan ? (
-                    <img 
-                      src={report.tandaTangan} 
-                      alt="Tanda Tangan Petugas" 
-                      className="max-h-10 max-w-full object-contain"
+                    <img
+                      src={report.tandaTangan}
+                      alt="Tanda Tangan Petugas"
+                      className="max-h-11 max-w-full object-contain"
                     />
                   ) : (
-                    <span className="text-[9px] text-slate-400 italic font-normal normal-case">
+                    <span className="text-[9.5px] text-slate-400 italic font-normal normal-case">
                       (Belum ada tanda tangan)
                     </span>
                   )}
@@ -311,7 +314,7 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
             </div>
 
             {report.catatanTambahan && (
-              <div className="mt-1 text-[9px] text-slate-700 italic border-t border-slate-200 pt-0.5">
+              <div className="mt-2 text-[10.5px] text-slate-700 italic border-t border-slate-200 pt-1">
                 * Catatan: {report.catatanTambahan}
               </div>
             )}
