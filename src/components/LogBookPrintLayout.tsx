@@ -114,21 +114,21 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
   return (
     <div className="space-y-4 max-w-7xl mx-auto">
       {/* Top Action Toolbar (Hidden during actual print) */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-[#2D3A2F] text-white p-3 sm:p-4 rounded-xl border border-[#3B4A3E] shadow-md print:hidden">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-white text-slate-800 p-3 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs print:hidden">
         <div className="flex items-center space-x-2">
           {onBack && (
             <button
               type="button"
               onClick={onBack}
-              className="p-1.5 hover:bg-[#3B4A3E] rounded-lg text-[#D1D9D3] hover:text-white transition-colors cursor-pointer"
+              className="p-2 hover:bg-slate-100 rounded-xl text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
               title="Kembali"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
           )}
           <div>
-            <h3 className="font-bold text-sm text-[#F8F7F2]">Format Resmi Log Book Sesuai Standar</h3>
-            <p className="text-xs text-[#A8B4AB]">ID Laporan: {report.id} | {report.tanggal} ({report.shift})</p>
+            <h3 className="font-bold text-sm text-slate-900">Format Resmi Log Book Sesuai Standar</h3>
+            <p className="text-xs text-slate-500">ID Laporan: {report.id} • {report.tanggal} ({report.shift})</p>
           </div>
         </div>
 
@@ -136,10 +136,10 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
           <button
             type="button"
             onClick={handleBrowserPrint}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-[#232D25] hover:bg-[#3B4A3E] text-[#D1D9D3] border border-[#3B4A3E] rounded-lg transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 rounded-xl transition-colors cursor-pointer"
           >
             <Printer className="w-3.5 h-3.5" />
-            Cetak / Print
+            <span>Cetak</span>
           </button>
 
           <button
@@ -147,17 +147,17 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
             id="btn-download-pdf-single"
             disabled={isExportingPdf}
             onClick={handleDownloadPdf}
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold bg-[#4A5D4E] hover:bg-[#3B4A3E] text-white rounded-lg shadow-sm transition-all disabled:opacity-50 border border-[#617666] cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold bg-[#0284C7] hover:bg-[#0369A1] text-white rounded-xl shadow-xs transition-all disabled:opacity-50 cursor-pointer active:scale-95"
           >
             {exportSuccess ? (
               <>
-                <Check className="w-3.5 h-3.5 text-emerald-400" />
-                PDF Berhasil Diunduh
+                <Check className="w-3.5 h-3.5 text-white" />
+                <span>PDF Berhasil Diunduh</span>
               </>
             ) : (
               <>
-                <Download className="w-3.5 h-3.5 text-[#A7F3D0]" />
-                {isExportingPdf ? 'Membuat File PDF...' : 'Download PDF Log Book'}
+                <Download className="w-3.5 h-3.5 text-white" />
+                <span>{isExportingPdf ? 'Membuat PDF...' : 'Download PDF A4'}</span>
               </>
             )}
           </button>
@@ -165,35 +165,44 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
       </div>
 
       {/* Mobile Swipe Hint banner (only visible on mobile screens) */}
-      <div className="flex sm:hidden items-center justify-between gap-2 px-3 py-2 bg-[#E2DDD5] text-[#2D332F] rounded-xl text-xs font-semibold border border-[#D1CCC3] print:hidden">
+      <div className="flex sm:hidden items-center justify-between gap-2 px-3 py-2 bg-sky-50 text-sky-900 rounded-xl text-xs font-semibold border border-sky-200 print:hidden">
         <span className="flex items-center gap-1.5 text-[11px]">
           <span>👉</span>
           <span>Geser dokumen ke samping untuk melihat seluruh peta & data</span>
         </span>
-        <span className="text-[10px] font-bold px-2 py-0.5 bg-[#4A5D4E] text-white rounded shrink-0">
+        <span className="text-[10px] font-bold px-2 py-0.5 bg-[#0F172A] text-white rounded-md shrink-0">
           A4 Landscape
         </span>
       </div>
 
       {/* OFFICIAL LOG BOOK DOCUMENT CONTAINER (Borderless canvas for clean export) */}
-      <div className="overflow-x-auto w-full bg-[#E9E5DE] p-2 sm:p-6 rounded-2xl flex justify-start md:justify-center shadow-inner print-container print:p-0 print:bg-white">
+      <div className="overflow-x-auto w-full bg-slate-200/70 p-2 sm:p-6 rounded-2xl flex justify-start md:justify-center shadow-inner print-container print:p-0 print:bg-white">
         <div
           ref={printRef}
           id="official-logbook-document"
           className="bg-white text-black p-6 sm:p-7 w-[1080px] min-w-[1080px] shrink-0 shadow-xl font-sans print:shadow-none print:border-none print:m-0 print:p-4 print:min-w-0"
           style={{ boxSizing: 'border-box' }}
         >
-          {/* 1. DOCUMENT HEADER (Identical to reference template) */}
-          <div className="text-center mb-3 pb-1.5 border-b border-black/30">
-            <h1 className="text-lg sm:text-xl font-black uppercase tracking-wider font-sans leading-tight text-black">
-              LOG BOOK
-            </h1>
-            <h2 className="text-xs sm:text-sm font-extrabold uppercase tracking-wide mt-0.5 text-black">
-              PEMANTAUAN HEWAN LIAR DI WILAYAH OPERASI BANDARA
-            </h2>
-            <p className="text-[10.5px] font-bold text-slate-800 mt-0.5">
-              (*Hewan Liar termasuk Burung)
-            </p>
+          {/* 1. DOCUMENT HEADER (Identical to reference template with WILONIA branding) */}
+          <div className="flex items-center justify-between mb-3 pb-2 border-b border-black/30">
+            <div className="w-36 flex items-center">
+              <img src="/logo-wilonia.png" alt="WILONIA" className="h-10 w-auto object-contain" />
+            </div>
+            <div className="text-center flex-1">
+              <h1 className="text-lg sm:text-xl font-black uppercase tracking-wider font-sans leading-tight text-black">
+                LOG BOOK
+              </h1>
+              <h2 className="text-xs sm:text-sm font-extrabold uppercase tracking-wide mt-0.5 text-black">
+                PEMANTAUAN HEWAN LIAR DI WILAYAH OPERASI BANDARA
+              </h2>
+              <p className="text-[10.5px] font-bold text-slate-800 mt-0.5">
+                (*Hewan Liar termasuk Burung)
+              </p>
+            </div>
+            {/* <div className="w-36 text-right text-[9.5px] font-mono font-bold text-slate-600">
+              <span>APPENDIX 3.a</span><br />
+              <span>WILONIA • TJQ</span>
+            </div> */}
           </div>
 
           {/* 2. TOP SECTION: LEFT META INFO + CENTER/RIGHT AIRPORT GRID MAP */}

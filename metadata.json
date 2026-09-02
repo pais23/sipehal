@@ -1,6 +1,6 @@
 {
-  "name": "Sistem Pemantauan Hewan Liar (SIPEHAL)",
-  "description": "Sistem Pemantauan Hewan Liar (SIPEHAL) di wilayah operasi Bandar Udara H. AS. Hanandjoeddin dengan peta grid resmi (8x4), tanda tangan digital canvas, dashboard pemantauan, dan ekspor dokumen resmi.",
+  "name": "WILONIA (Wildlife Logbook Inspection InJourney Airports)",
+  "description": "WILONIA - Wildlife Logbook Inspection InJourney Airports di wilayah operasi Bandar Udara H. AS. Hanandjoeddin dengan peta grid resmi (8x4), tanda tangan digital canvas, dashboard pemantauan, dan ekspor dokumen resmi.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

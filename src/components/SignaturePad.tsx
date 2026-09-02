@@ -228,8 +228,8 @@ export const SignaturePad: React.FC<SignaturePadProps> = ({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <label className="text-xs sm:text-sm font-semibold text-[#2D332F] flex items-center gap-1.5">
-          <PenTool className="w-4 h-4 text-[#4A5D4E]" />
+        <label className="text-xs sm:text-sm font-semibold text-slate-800 flex items-center gap-1.5">
+          <PenTool className="w-4 h-4 text-sky-600" />
           Tanda Tangan Digital Petugas
           {required && <span className="text-rose-500">*</span>}
         </label>
@@ -238,7 +238,7 @@ export const SignaturePad: React.FC<SignaturePadProps> = ({
           type="button"
           id="btn-clear-signature"
           onClick={handleClear}
-          className="inline-flex items-center gap-1 text-xs font-medium text-[#5F6B63] hover:text-rose-600 bg-[#F1F3F0] hover:bg-rose-50 px-2.5 py-1 rounded-md border border-[#E9E5DE] hover:border-rose-200 transition-colors"
+          className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-rose-600 bg-slate-100 hover:bg-rose-50 px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-rose-200 transition-colors cursor-pointer"
         >
           <Eraser className="w-3.5 h-3.5" />
           Hapus / Ulangi
@@ -248,7 +248,7 @@ export const SignaturePad: React.FC<SignaturePadProps> = ({
       {/* Signature Canvas Box */}
       <div 
         ref={containerRef}
-        className="relative w-full h-44 sm:h-48 bg-[#FDFCFB] border-2 border-dashed border-[#D6CEC4] rounded-xl overflow-hidden shadow-inner focus-within:border-[#4A5D4E] focus-within:ring-2 focus-within:ring-[#4A5D4E]/20"
+        className="relative w-full h-44 sm:h-48 bg-slate-50/70 border-2 border-dashed border-slate-300 rounded-2xl overflow-hidden shadow-inner focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500/20"
       >
         {/* Canvas Element with touch-action: none for mobile finger signing */}
         <canvas
@@ -263,10 +263,10 @@ export const SignaturePad: React.FC<SignaturePadProps> = ({
         />
 
         {/* Baseline / Watermark Guide */}
-        <div className="absolute bottom-6 left-6 right-6 border-b border-[#D6CEC4] pointer-events-none flex items-center justify-between text-[11px] text-[#8A958E]">
-          <span className="bg-[#FDFCFB]/90 px-1.5 font-mono">Tanda Tangan di atas garis ini</span>
+        <div className="absolute bottom-5 left-5 right-5 border-b border-slate-300 pointer-events-none flex items-center justify-between text-[11px] text-slate-400">
+          <span className="bg-slate-50/90 px-1.5 font-mono text-[10px]">Tanda Tangan di atas garis ini</span>
           {officerName && (
-            <span className="bg-[#FDFCFB]/90 px-1.5 font-semibold text-[#2D332F] truncate max-w-[200px]">
+            <span className="bg-slate-50/90 px-1.5 font-semibold text-slate-800 truncate max-w-[200px]">
               ( {officerName} )
             </span>
           )}
@@ -274,16 +274,16 @@ export const SignaturePad: React.FC<SignaturePadProps> = ({
 
         {/* Empty State Prompt */}
         {!hasContent && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-[#8A958E] gap-1">
-            <PenTool className="w-6 h-6 stroke-1 text-[#D6CEC4]" />
-            <p className="text-xs text-[#8A958E] font-medium">Goreskan tanda tangan memakai jari, stylus, atau mouse</p>
+          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-slate-400 gap-1 px-4 text-center">
+            <PenTool className="w-6 h-6 stroke-1 text-slate-300" />
+            <p className="text-xs font-medium text-slate-400">Goreskan tanda tangan memakai jari, stylus, atau mouse</p>
           </div>
         )}
 
         {/* Signed Status Indicator */}
         {hasContent && (
-          <div className="absolute top-2 right-2 pointer-events-none bg-[#E8EDE7] border border-[#DCE4DC] text-[#4A5D4E] px-2.5 py-1 rounded text-[11px] font-bold flex items-center gap-1 shadow-xs">
-            <Check className="w-3.5 h-3.5 text-[#4A5D4E]" />
+          <div className="absolute top-2.5 right-2.5 pointer-events-none bg-emerald-50 border border-emerald-200 text-emerald-800 px-2.5 py-1 rounded-lg text-[11px] font-bold flex items-center gap-1 shadow-xs">
+            <Check className="w-3.5 h-3.5 text-emerald-600" />
             Tanda Tangan Tersimpan
           </div>
         )}

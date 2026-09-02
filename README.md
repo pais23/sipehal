@@ -18,4 +18,5 @@ View your app in AI Studio: https://ai.studio/apps/f3ba766f-bfd5-4a70-ba7c-bb235
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
-# SIPEHAL
+# WILONIA (Wildlife Logbook Inspection InJourney Airports)
+Sistem Pemantauan Hewan Liar di wilayah operasi Bandar Udara H. AS. Hanandjoeddin.
