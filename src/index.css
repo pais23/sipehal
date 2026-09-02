@@ -46,6 +46,7 @@
 
   #official-logbook-document {
     width: 100% !important;
+    min-width: 0 !important;
     max-width: 100% !important;
     margin: 0 auto !important;
     padding: 3mm !important;

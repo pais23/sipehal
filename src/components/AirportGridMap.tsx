@@ -100,6 +100,25 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
 
   const handleMouseUp = () => setIsDragging(false);
 
+  // Touch pan handlers for mobile/tablet touchscreen gestures
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (zoom > 1 && e.touches.length === 1) {
+      setIsDragging(true);
+      setDragStart({ x: e.touches[0].clientX - pan.x, y: e.touches[0].clientY - pan.y });
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (isDragging && zoom > 1 && e.touches.length === 1) {
+      setPan({
+        x: e.touches[0].clientX - dragStart.x,
+        y: e.touches[0].clientY - dragStart.y
+      });
+    }
+  };
+
+  const handleTouchEnd = () => setIsDragging(false);
+
   return (
     <div className={`relative bg-white rounded-xl overflow-hidden border border-black/70 select-none shadow-sm ${className}`}>
       
@@ -192,11 +211,16 @@ export const AirportGridMap: React.FC<AirportGridMapProps> = ({
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
       >
         <div 
-          className={`relative transition-transform duration-75 origin-center w-full ${compact ? 'aspect-[2.35/1]' : 'aspect-[2.1/1]'} bg-white border border-black shadow-sm`}
+          className={`relative transition-transform duration-75 origin-center w-full ${compact ? 'aspect-[2.35/1] min-h-[140px]' : 'aspect-[2.1/1] min-h-[180px]'} bg-white border border-black shadow-sm`}
           style={{
-            transform: interactive ? `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)` : undefined
+            transform: interactive ? `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)` : undefined,
+            aspectRatio: compact ? '2.35 / 1' : '2.1 / 1'
           }}
         >
           {/* Main Map Box */}

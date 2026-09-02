@@ -27,17 +27,28 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
     setExportSuccess(false);
 
     try {
-      // 1. Convert DOM node to PNG image data URL with high fidelity
-      const dataUrl = await toPng(printRef.current, {
+      const targetElement = printRef.current;
+      const targetWidth = 1080;
+      const targetHeight = targetElement.scrollHeight || 760;
+
+      // 1. Convert DOM node to PNG image data URL with explicit dimensions & high fidelity
+      const dataUrl = await toPng(targetElement, {
         quality: 1,
         backgroundColor: '#ffffff',
         pixelRatio: 2.5,
         cacheBust: true,
+        width: targetWidth,
+        height: targetHeight,
+        canvasWidth: targetWidth * 2.5,
+        canvasHeight: targetHeight * 2.5,
         style: {
           margin: '0',
           transform: 'none',
           border: 'none',
-          boxShadow: 'none'
+          boxShadow: 'none',
+          width: `${targetWidth}px`,
+          minWidth: `${targetWidth}px`,
+          maxWidth: `${targetWidth}px`
         }
       });
 
@@ -153,12 +164,23 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
         </div>
       </div>
 
+      {/* Mobile Swipe Hint banner (only visible on mobile screens) */}
+      <div className="flex sm:hidden items-center justify-between gap-2 px-3 py-2 bg-[#E2DDD5] text-[#2D332F] rounded-xl text-xs font-semibold border border-[#D1CCC3] print:hidden">
+        <span className="flex items-center gap-1.5 text-[11px]">
+          <span>👉</span>
+          <span>Geser dokumen ke samping untuk melihat seluruh peta & data</span>
+        </span>
+        <span className="text-[10px] font-bold px-2 py-0.5 bg-[#4A5D4E] text-white rounded shrink-0">
+          A4 Landscape
+        </span>
+      </div>
+
       {/* OFFICIAL LOG BOOK DOCUMENT CONTAINER (Borderless canvas for clean export) */}
-      <div className="overflow-x-auto bg-[#E9E5DE] p-2 sm:p-6 rounded-2xl flex justify-center shadow-inner print-container print:p-0 print:bg-white">
+      <div className="overflow-x-auto w-full bg-[#E9E5DE] p-2 sm:p-6 rounded-2xl flex justify-start md:justify-center shadow-inner print-container print:p-0 print:bg-white">
         <div
           ref={printRef}
           id="official-logbook-document"
-          className="bg-white text-black p-6 sm:p-7 w-[1080px] shadow-xl font-sans print:shadow-none print:border-none print:m-0 print:p-4"
+          className="bg-white text-black p-6 sm:p-7 w-[1080px] min-w-[1080px] shrink-0 shadow-xl font-sans print:shadow-none print:border-none print:m-0 print:p-4 print:min-w-0"
           style={{ boxSizing: 'border-box' }}
         >
           {/* 1. DOCUMENT HEADER (Identical to reference template) */}
@@ -211,14 +233,14 @@ export const LogBookPrintLayout: React.FC<LogBookPrintLayoutProps> = ({
             </div>
 
             {/* Center: Grid Map Layout */}
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-[450px]">
               <AirportGridMap
                 mode="markers"
                 findings={report.temuan}
                 interactive={false}
                 compact={true}
                 showLegend={false}
-                className="border border-black shadow-none rounded-none"
+                className="border border-black shadow-none rounded-none w-full"
               />
             </div>
 
